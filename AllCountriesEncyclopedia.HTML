@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive world encyclopedia featuring countries, capitals, continents, geography, history, government, and culture.">
+<title>World Encyclopedia | Explore Planet Earth</title>
+
+<style>
+:root {
+    --navy: #07182d;
+    --blue: #164e87;
+    --cyan: #55c4e8;
+    --gold: #ffd166;
+    --paper: #f3f6fb;
+    --ink: #18283b;
+    --muted: #607086;
+    --border: #d8e1ed;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.75;
+}
+
+header {
+    padding: 65px 22px;
+    color: white;
+    background:
+        radial-gradient(circle at 85% 20%, #1e719c 0, transparent 28%),
+        linear-gradient(125deg, #061326, #123e70 70%, #176c86);
+    border-bottom: 7px solid var(--gold);
+}
+
+.header-inner {
+    max-width: 1250px;
+    margin: auto;
+}
+
+.planet {
+    font-size: 62px;
+}
+
+header h1 {
+    font-size: clamp(36px, 7vw, 76px);
+    line-height: 1.08;
+    margin: 10px 0 20px;
+}
+
+header p {
+    max-width: 850px;
+    font-size: 18px;
+    color: #e4efff;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #8bb9df;
+    border-radius: 25px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+nav {
+    background: var(--navy);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav a {
+    padding: 13px 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    background: var(--gold);
+    color: var(--navy);
+}
+
+main {
+    max-width: 1250px;
+    margin: auto;
+    padding: 25px 20px 60px;
+}
+
+section {
+    margin: 38px 0;
+    scroll-margin-top: 75px;
+}
+
+.heading {
+    border-left: 6px solid var(--gold);
+    padding-left: 17px;
+    margin-bottom: 25px;
+}
+
+.heading h2 {
+    margin: 0;
+    color: var(--navy);
+    font-size: clamp(27px, 4vw, 39px);
+    line-height: 1.3;
+}
+
+.heading p {
+    color: var(--muted);
+    margin-bottom: 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 4px 15px rgba(15, 43, 74, .045);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--blue);
+}
+
+.stat {
+    border-top: 5px solid var(--gold);
+}
+
+.stat strong {
+    display: block;
+    font-size: 29px;
+    color: var(--blue);
+}
+
+.notice {
+    background: #fff5d7;
+    border-left: 5px solid #d5a31b;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 22px 0;
+}
+
+.info {
+    background: #e7f2ff;
+    border-left: 5px solid var(--blue);
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 22px 0;
+}
+
+.controls {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 22px;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    margin: 7px 0;
+    border: 2px solid #c5d3e3;
+    border-radius: 8px;
+    background: white;
+    font-size: 16px;
+}
+
+input:focus, select:focus {
+    outline: 3px solid #d7ebff;
+    border-color: var(--blue);
+}
+
+.results-count {
+    font-weight: bold;
+    color: var(--blue);
+    margin: 15px 0;
+}
+
+.country-card {
+    border-top: 5px solid var(--blue);
+    display: flex;
+    flex-direction: column;
+}
+
+.country-flag {
+    font-size: 38px;
+}
+
+.country-card h3 {
+    margin: 8px 0;
+}
+
+.country-meta {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.country-card p {
+    font-size: 14px;
+}
+
+.country-card button {
+    margin-top: auto;
+    background: var(--blue);
+    color: white;
+    border: 0;
+    padding: 12px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.country-card button:hover {
+    background: var(--navy);
+}
+
+.pill {
+    display: inline-block;
+    background: #e7eff9;
+    color: #164e87;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin: 3px 0;
+}
+
+.timeline {
+    border-left: 4px solid var(--blue);
+    padding-left: 24px;
+    margin-left: 10px;
+}
+
+.event {
+    background: white;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.event::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    left: -34px;
+    top: 27px;
+    background: var(--gold);
+    border: 3px solid var(--blue);
+    border-radius: 50%;
+}
+
+.event h3 {
+    margin-top: 0;
+    color: var(--blue);
+}
+
+footer {
+    background: var(--navy);
+    color: #e3ecf8;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+footer p {
+    max-width: 900px;
+    margin: 12px auto;
+    font-size: 14px;
+}
+
+footer a {
+    color: var(--gold);
+}
+
+.back-top {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 16px;
+    background: var(--gold);
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 7px;
+}
+
+dialog {
+    width: min(850px, 94%);
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 15px;
+    padding: 28px;
+    box-shadow: 0 15px 60px #0005;
+}
+
+dialog::backdrop {
+    background: #07182dcc;
+}
+
+.dialog-close {
+    background: var(--navy);
+    color: white;
+    border: 0;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.no-results {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+@media (max-width: 650px) {
+    header {
+        padding: 40px 18px;
+    }
+
+    nav {
+        position: static;
+    }
+
+    nav a {
+        padding: 10px;
+    }
+
+    main {
+        padding: 18px 12px 40px;
+    }
+}
+
+@media print {
+    nav, .controls, button, .back-top {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+}
+</style>
+</head>
+
+<body id="top">
+
+<header>
+    <div class="header-inner">
+        <div class="planet">🌍</div>
+        <span class="badge">Global Knowledge Project</span>
+        <h1>World Encyclopedia</h1>
+        <p>
+            Explore the countries and territories of Earth, the continents
+            that connect them, the civilizations that shaped human history,
+            and the geographical, political, scientific, and cultural
+            systems that make our planet extraordinary.
+        </p>
+        <p><strong>One planet. Many nations. Thousands of cultures. A shared history.</strong></p>
+    </div>
+</header>
+
+<nav>
+    <a href="#overview">Overview</a>
+    <a href="#continents">Continents</a>
+    <a href="#countries">Countries</a>
+    <a href="#history">World History</a>
+    <a href="#government">Government</a>
+    <a href="#geography">Geography</a>
+    <a href="#science">Science</a>
+    <a href="#culture">Culture</a>
+    <a href="#sources">Sources</a>
+</nav>
+
+<main>
+
+<section id="overview">
+    <div class="heading">
+        <h2>1. Planet Earth: An Overview</h2>
+        <p>Our home in the Solar System.</p>
+    </div>
+
+    <div class="grid">
+        <article class="card stat">
+            <strong>8</strong>
+            Billion-plus people live on Earth, with population totals changing continuously.
+        </article>
+
+        <article class="card stat">
+            <strong>7</strong>
+            Commonly recognized continents: Africa, Antarctica, Asia, Europe,
+            North America, South America, and Australia.
+        </article>
+
+        <article class="card stat">
+            <strong>195</strong>
+            Countries under the common educational convention of 193 United
+            Nations member states plus the Holy See and the State of Palestine.
+        </article>
+
+        <article class="card stat">
+            <strong>1</strong>
+            Earth is the only planet currently known to support life.
+        </article>
+    </div>
+
+    <h3>What is a country?</h3>
+    <p>
+        A country is commonly understood as a political and geographical
+        community associated with a territory, population, and governing
+        institutions. In international law, questions of statehood and
+        recognition can be complicated. Some places exercise substantial
+        self-government but have disputed or limited international recognition.
+        As a result, different organizations may use different lists of
+        countries and territories.
+    </p>
+
+    <div class="notice">
+        <strong>Important:</strong> This directory uses the common
+        195-country educational convention. It does not imply that every
+        country or territory has the same international status, and it
+        does not include every dependent territory or disputed area as
+        a separate country.
+    </div>
+</section>
+
+<section id="continents">
+    <div class="heading">
+        <h2>2. The Seven Continents</h2>
+        <p>Earth's major continental regions.</p>
+    </div>
+
+    <div class="grid">
+        <article class="card">
+            <h3>🌏 Asia</h3>
+            <p>
+                Asia is the largest continent by land area and population.
+                It includes regions commonly described as East Asia,
+                Southeast Asia, South Asia, Central Asia, and Western Asia.
+                Its landscapes range from Arctic coastlines and vast
+                deserts to tropical forests and the world's highest mountains.
+            </p>
+            <p>
+                Asia has been home to major historical civilizations,
+                including those associated with China, the Indus Valley,
+                Mesopotamia, Persia, and many Southeast Asian societies.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>🌍 Africa</h3>
+            <p>
+                Africa contains immense ecological and cultural diversity,
+                including the Sahara, the Sahel, tropical rainforests,
+                highlands, savannas, and extensive coastlines.
+            </p>
+            <p>
+                The continent is central to the history of humanity.
+                Its societies include ancient Egypt, Nubian kingdoms,
+                Aksum, the Mali Empire, Great Zimbabwe, and countless
+                other communities with varied political and cultural histories.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>🌏 Europe</h3>
+            <p>
+                Europe is a geographically diverse region connected to
+                Asia across a broad continental landmass. Its history
+                includes ancient Greek and Roman societies, medieval
+                kingdoms, religious transformations, industrialization,
+                imperial expansion, and major political revolutions.
+            </p>
+            <p>
+                Modern Europe contains a variety of national governments
+                and international institutions, including the European Union.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>🌎 North America</h3>
+            <p>
+                North America extends from Arctic regions to tropical
+                areas. It contains large mountain systems, plains,
+                forests, deserts, freshwater lakes, and diverse coastlines.
+            </p>
+            <p>
+                Its history includes Indigenous civilizations and nations,
+                European colonization, the development of the United States
+                and Canada, Mexico's long history, Caribbean societies,
+                and many movements for independence and civil rights.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>🌎 South America</h3>
+            <p>
+                South America includes the Andes, Amazon Basin, grasslands,
+                deserts, high plateaus, and Atlantic and Pacific coastlines.
+                The Amazon rainforest is one of the world's most important
+                ecosystems.
+            </p>
+            <p>
+                The continent's history includes Indigenous civilizations,
+                Spanish and Portuguese colonization, independence movements,
+                the rise of modern republics, and continuing struggles
+                over inequality, resources, and environmental protection.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>🌏 Australia</h3>
+            <p>
+                Australia is both a country and the name commonly used
+                for a continent in the seven-continent model. Its
+                environments include deserts, tropical forests, grasslands,
+                and coastal ecosystems.
+            </p>
+            <p>
+                Aboriginal and Torres Strait Islander peoples have
+                extraordinarily long and diverse histories on the continent.
+                European colonization beginning in 1788 profoundly
+                transformed Indigenous societies and the development
+                of the modern Australian state.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>🧊 Antarctica</h3>
+            <p>
+                Antarctica surrounds the South Pole and is covered
+                largely by a massive ice sheet. It has no permanent
+                Indigenous population or sovereign national government.
+                Research stations operated by different countries
+                support scientific study.
+            </p>
+            <p>
+                The Antarctic Treaty System governs important aspects
+                of international cooperation and the peaceful use
+                of the continent.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section id="countries">
+    <div class="heading">
+        <h2>3. Countries of the World</h2>
+        <p>Search all 195 entries in this built-in directory.</p>
+    </div>
+
+    <div class="controls">
+        <label for="countrySearch"><strong>Search for a country</strong></label>
+        <input type="search" id="countrySearch"
+               placeholder="Try Japan, Brazil, Philippines, Kenya...">
+
+        <label for="continentFilter"><strong>Filter by continent</strong></label>
+        <select id="continentFilter">
+            <option value="">All continents</option>
+            <option value="Africa">Africa</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europe</option>
+            <option value="North America">North America</option>
+            <option value="South America">South America</option>
+            <option value="Oceania">Oceania</option>
+        </select>
+
+        <div class="results-count" id="resultsCount" aria-live="polite">
+            Loading country directory...
+        </div>
+    </div>
+
+    <div class="grid" id="countryGrid"></div>
+</section>
+
+<section id="history">
+    <div class="heading">
+        <h2>4. World History</h2>
+        <p>A broad timeline of major developments in human history.</p>
+    </div>
+
+    <div class="timeline">
+
+        <article class="event">
+            <h3>Prehistory — before written records</h3>
+            <p>
+                Human history extends far beyond the period covered by
+                written documents. Archaeology, genetics, fossils, tools,
+                art, and environmental evidence help researchers study
+                human evolution, migration, settlement, and adaptation.
+                Modern humans evolved in Africa and eventually populated
+                nearly every habitable region of Earth.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Early agriculture and permanent settlements</h3>
+            <p>
+                In several regions, people developed agriculture and
+                animal domestication independently or through the spread
+                of ideas and practices. Farming supported larger and
+                more permanent settlements, but its effects varied.
+                Communities continued to depend on hunting, gathering,
+                fishing, herding, and other ways of living.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Ancient civilizations</h3>
+            <p>
+                Ancient civilizations developed in regions including
+                Mesopotamia, the Nile Valley, the Indus Valley, China,
+                the Mediterranean, the Americas, and elsewhere.
+                Their achievements included urban planning, writing
+                systems, legal traditions, mathematics, astronomy,
+                architecture, trade, and varied political institutions.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Classical and interconnected worlds</h3>
+            <p>
+                Empires, kingdoms, and trading networks connected
+                distant communities. The Roman Empire, Han China,
+                South Asian states, Persian empires, African kingdoms,
+                and many American societies developed different systems
+                of governance, commerce, religion, and knowledge.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Medieval periods</h3>
+            <p>
+                The term "Middle Ages" usually refers to a period in
+                European history, not a single worldwide era. During
+                overlapping centuries, Islamic societies supported
+                extensive scholarship and trade; African kingdoms
+                developed powerful commercial networks; Asian empires
+                expanded; and Indigenous societies across the Americas
+                built complex cities and political systems.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Maritime expansion and colonialism</h3>
+            <p>
+                From the fifteenth century onward, European maritime
+                expansion transformed global connections. Colonization
+                brought conquest, forced labor, enslavement, religious
+                change, disease, resource extraction, migration, and
+                resistance. Indigenous peoples and colonized societies
+                were active historical participants, not simply
+                passive recipients of change.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Industrial Revolution</h3>
+            <p>
+                Beginning in Britain in the eighteenth century and
+                spreading in different forms, industrialization
+                transformed manufacturing, transportation, energy use,
+                urban life, labor, and economic organization. These
+                changes created new wealth and technologies while
+                also producing harsh working conditions, pollution,
+                inequality, and major social conflicts.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>World War I — 1914–1918</h3>
+            <p>
+                World War I involved major powers and their allies in
+                a conflict shaped by imperial rivalries, nationalism,
+                military planning, and political crises. The war
+                caused immense casualties and helped transform
+                European empires, international politics, and
+                revolutionary movements.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>World War II — 1939–1945</h3>
+            <p>
+                World War II was a global conflict involving Axis
+                and Allied powers. It included aggressive wars,
+                occupation, mass atrocities, the Holocaust, forced
+                displacement, strategic bombing, and the atomic
+                bombings of Hiroshima and Nagasaki. The war reshaped
+                borders, institutions, international law, and
+                the balance of global power.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>The Cold War</h3>
+            <p>
+                After World War II, the United States and the Soviet
+                Union became rival superpowers. Their competition
+                shaped alliances, nuclear arms development, proxy
+                wars, intelligence operations, technological
+                competition, and political struggles across many
+                regions. The Soviet Union dissolved in 1991.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Decolonization</h3>
+            <p>
+                During the twentieth century, many countries in Asia,
+                Africa, the Caribbean, and elsewhere gained independence
+                from colonial powers. Independence movements used
+                diverse strategies, including political organizing,
+                negotiations, mass protests, and armed struggle.
+                New states then faced difficult questions about
+                borders, institutions, economic development, and
+                national identity.
+            </p>
+        </article>
+
+        <article class="event">
+            <h3>Contemporary world</h3>
+            <p>
+                The contemporary period is shaped by globalization,
+                digital communication, international trade, migration,
+                climate change, public-health challenges, geopolitical
+                competition, scientific innovation, and debates over
+                democracy, human rights, inequality, and sustainable
+                development.
+            </p>
+        </article>
+
+    </div>
+</section>
+
+<section id="government">
+    <div class="heading">
+        <h2>5. Government and International Relations</h2>
+        <p>How countries organize power and cooperate across borders.</p>
+    </div>
+
+    <div class="grid">
+        <article class="card">
+            <h3>Republic</h3>
+            <p>
+                A republic generally has a head of state who is not
+                a hereditary monarch. Republics differ greatly in
+                their constitutions, electoral systems, protections
+                for civil liberties, and actual distribution of power.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Constitutional monarchy</h3>
+            <p>
+                A constitutional monarchy retains a monarch as head
+                of state while governmental powers are defined and
+                limited by a constitution, laws, and political
+                institutions. The monarch's practical role varies
+                significantly from country to country.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Parliamentary government</h3>
+            <p>
+                In a parliamentary system, the government usually
+                depends on the confidence of the elected legislature.
+                A prime minister typically leads the government,
+                while a separate head of state may have ceremonial
+                or constitutional responsibilities.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Federal government</h3>
+            <p>
+                A federation constitutionally divides authority
+                between national and regional governments. The
+                powers of states, provinces, or constituent units
+                vary according to the country's constitution.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>United Nations</h3>
+            <p>
+                The United Nations is an international organization
+                founded in 1945. Its work includes diplomacy,
+                peace and security, humanitarian coordination,
+                development, and international cooperation.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>International law</h3>
+            <p>
+                International law includes treaties, customary
+                international law, and other recognized legal
+                sources governing relations among states and
+                other international actors.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section id="geography">
+    <div class="heading">
+        <h2>6. Earth's Geography</h2>
+        <p>Oceans, landforms, climate, ecosystems, and natural hazards.</p>
+    </div>
+
+    <h3>The five oceans</h3>
+    <div class="grid">
+        <article class="card">
+            <h3>Pacific Ocean</h3>
+            <p>
+                The Pacific is the largest ocean. It contains many
+                island groups and is bordered by regions with active
+                tectonic boundaries, volcanoes, and earthquake zones.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Atlantic Ocean</h3>
+            <p>
+                The Atlantic separates the Americas from Europe
+                and Africa. It has been central to migration,
+                trade, colonial expansion, and global shipping.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Indian Ocean</h3>
+            <p>
+                The Indian Ocean connects eastern Africa, the Middle
+                East, South Asia, Southeast Asia, and Australia.
+                Its monsoon patterns have shaped maritime commerce
+                for centuries.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Southern Ocean</h3>
+            <p>
+                The Southern Ocean surrounds Antarctica and is
+                important to global ocean circulation and the
+                planet's climate system.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Arctic Ocean</h3>
+            <p>
+                The Arctic Ocean lies around the North Pole and is
+                bordered by northern parts of North America, Europe,
+                and Asia. Sea ice and Arctic ecosystems are
+                affected by rapid warming.
+            </p>
+        </article>
+    </div>
+
+    <h3>Major natural systems</h3>
+    <p>
+        Earth's landscapes are shaped by plate tectonics, erosion,
+        weathering, river processes, glaciers, volcanic activity,
+        ocean currents, and climate. These systems interact over
+        different time scales, from sudden earthquakes to the
+        gradual formation of mountain ranges.
+    </p>
+
+    <p>
+        Ecosystems include tropical rainforests, temperate forests,
+        grasslands, deserts, wetlands, coral reefs, mangroves,
+        tundra, and polar environments. Each ecosystem supports
+        particular communities of organisms and provides services
+        important to human life, such as food production, water
+        regulation, carbon storage, and habitat.
+    </p>
+</section>
+
+<section id="science">
+    <div class="heading">
+        <h2>7. Science and Technology</h2>
+        <p>How evidence and invention change our understanding of the world.</p>
+    </div>
+
+    <div class="grid">
+        <article class="card">
+            <h3>Astronomy</h3>
+            <p>
+                Astronomy studies planets, stars, galaxies, black holes,
+                and the universe. Earth orbits the Sun, which is one
+                star among the enormous number of stars in the Milky Way.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Biology</h3>
+            <p>
+                Biology studies living organisms, their structures,
+                functions, evolution, genetics, and interactions
+                with their environments.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Physics</h3>
+            <p>
+                Physics examines matter, energy, motion, forces,
+                waves, electricity, magnetism, and the fundamental
+                behavior of nature.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Medicine</h3>
+            <p>
+                Medical science studies health and disease and
+                develops ways to prevent, diagnose, and treat
+                illness. Reliable medical decisions depend on
+                evidence and qualified healthcare professionals.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Computing</h3>
+            <p>
+                Computing encompasses algorithms, software,
+                networks, artificial intelligence, cybersecurity,
+                and the hardware systems used to process information.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Space exploration</h3>
+            <p>
+                Space exploration uses satellites, robotic probes,
+                telescopes, and crewed missions to study Earth,
+                the Moon, other planets, and the wider universe.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section id="culture">
+    <div class="heading">
+        <h2>8. World Cultures and Human Society</h2>
+        <p>Languages, traditions, arts, beliefs, and everyday life.</p>
+    </div>
+
+    <p>
+        Human cultures are dynamic systems of shared and contested
+        meanings, practices, knowledge, and institutions. They
+        influence food, clothing, language, architecture, music,
+        family life, celebrations, and ways of understanding the
+        world. Cultures are not frozen in time: they change through
+        migration, trade, technology, education, political events,
+        and contact with other communities.
+    </p>
+
+    <div class="grid">
+        <article class="card">
+            <h3>Languages</h3>
+            <p>
+                Thousands of languages are spoken worldwide. Languages
+                preserve knowledge and identity, and many are threatened
+                by declining use. Documentation, education, and community
+                initiatives can support language preservation.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Religion and philosophy</h3>
+            <p>
+                Religious and philosophical traditions address questions
+                about meaning, ethics, community, existence, and the
+                nature of reality. Beliefs and practices vary widely
+                both between and within traditions.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Food traditions</h3>
+            <p>
+                Food reflects geography, agriculture, trade, migration,
+                technology, religion, and family customs. Similar
+                ingredients can be prepared in very different ways
+                across cultures.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Music and arts</h3>
+            <p>
+                Music, dance, literature, painting, sculpture, film,
+                and other art forms preserve experiences and express
+                creativity. Artistic traditions often develop through
+                both local innovation and cultural exchange.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Architecture</h3>
+            <p>
+                Buildings and settlements reflect climate, materials,
+                technology, political power, religious practice,
+                trade, and social organization. Architectural heritage
+                provides evidence about how people lived and worked.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Human rights</h3>
+            <p>
+                Human rights are rights and freedoms recognized through
+                international instruments and domestic legal systems.
+                Their interpretation, protection, and enforcement
+                remain important issues worldwide.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section id="sources">
+    <div class="heading">
+        <h2>9. Official Sources and Further Reading</h2>
+        <p>Research tools for verifying facts and expanding the encyclopedia.</p>
+    </div>
+
+    <div class="grid">
+        <article class="card">
+            <h3>United Nations</h3>
+            <p>
+                Information about member states, international
+                institutions, diplomacy, peace and security,
+                and international development.
+            </p>
+            <a href="https://www.un.org/" target="_blank" rel="noopener noreferrer">
+                Visit the United Nations
+            </a>
+        </article>
+
+        <article class="card">
+            <h3>World Bank</h3>
+            <p>
+                Country profiles, development indicators, economic
+                data, and research about poverty and development.
+            </p>
+            <a href="https://www.worldbank.org/" target="_blank" rel="noopener noreferrer">
+                Visit the World Bank
+            </a>
+        </article>
+
+        <article class="card">
+            <h3>World Health Organization</h3>
+            <p>
+                Global public-health information, disease surveillance,
+                health guidance, and health-system research.
+            </p>
+            <a href="https://www.who.int/" target="_blank" rel="noopener noreferrer">
+                Visit the WHO
+            </a>
+        </article>
+
+        <article class="card">
+            <h3>UNESCO</h3>
+            <p>
+                Information about education, science, culture,
+                intangible heritage, and World Heritage Sites.
+            </p>
+            <a href="https://www.unesco.org/" target="_blank" rel="noopener noreferrer">
+                Visit UNESCO
+            </a>
+        </article>
+
+        <article class="card">
+            <h3>NASA</h3>
+            <p>
+                Space science, astronomy, planetary exploration,
+                Earth observation, and educational resources.
+            </p>
+            <a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">
+                Visit NASA
+            </a>
+        </article>
+
+        <article class="card">
+            <h3>Encyclopaedia Britannica</h3>
+            <p>
+                Editorial reference articles covering countries,
+                history, geography, science, and culture.
+            </p>
+            <a href="https://www.britannica.com/" target="_blank" rel="noopener noreferrer">
+                Visit Britannica
+            </a>
+        </article>
+    </div>
+
+    <div class="notice">
+        <strong>Research standard:</strong> The country directory below
+        provides short identification summaries, not complete national
+        histories. For accurate current information about population,
+        leadership, laws, borders, economies, and international recognition,
+        consult current authoritative sources. Such details can change.
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <h2>🌍 World Encyclopedia</h2>
+    <p>
+        A global educational reference project exploring countries,
+        continents, history, geography, government, science, and culture.
+    </p>
+    <p>
+        Country counts depend on the definition and recognition criteria
+        used. Country summaries are introductory and should not replace
+        current official or specialist sources.
+    </p>
+    <a href="#top" class="back-top">Back to Top ↑</a>
+</footer>
+
+<dialog id="countryDialog" aria-labelledby="dialogTitle">
+    <div id="dialogContent"></div>
+    <button class="dialog-close" id="closeDialog">Close</button>
+</dialog>
+
+<script>
+const countries = [
+["Afghanistan","Kabul","Asia","South-Central Asia","A landlocked country with mountainous terrain and a long history connecting Central and South Asia."],
+["Albania","Tirana","Europe","Southeastern Europe","A Balkan country on the Adriatic and Ionian seas with a distinct language and layered regional history."],
+["Algeria","Algiers","Africa","North Africa","Africa's largest country by land area, with Mediterranean coastlands and extensive Saharan territory."],
+["Andorra","Andorra la Vella","Europe","Pyrenees","A small sovereign state in the Pyrenees between France and Spain."],
+["Angola","Luanda","Africa","Southern Africa","An Atlantic-facing country with varied landscapes, natural resources, and a history of Portuguese colonial rule and independence."],
+["Antigua and Barbuda","Saint John's","North America","Caribbean","A Caribbean island country with a service-based economy and a history shaped by Indigenous peoples and British colonialism."],
+["Argentina","Buenos Aires","South America","Southern South America","A large South American country known for the Pampas, Andes, varied climates, and rich cultural traditions."],
+["Armenia","Yerevan","Asia","South Caucasus","A country in the South Caucasus with an ancient Christian heritage and a distinctive language."],
+["Australia","Canberra","Oceania","Australasia","A country and continent with diverse ecosystems, ancient Indigenous cultures, and highly urbanized coastal populations."],
+["Austria","Vienna","Europe","Central Europe","A landlocked Central European country with Alpine landscapes and a major historical role in European music and politics."],
+["Azerbaijan","Baku","Asia","South Caucasus","A country on the Caspian Sea with a history connecting the Caucasus, Persia, and wider Eurasia."],
+["Bahamas","Nassau","North America","Caribbean","An Atlantic archipelago known for coral islands, maritime ecosystems, tourism, and a history of British colonial rule."],
+["Bahrain","Manama","Asia","Persian Gulf","An island country in the Persian Gulf with a long history of trade and pearl diving."],
+["Bangladesh","Dhaka","Asia","South Asia","A densely populated South Asian country shaped by the Ganges-Brahmaputra-Meghna delta and a major Bengali cultural tradition."],
+["Barbados","Bridgetown","North America","Caribbean","An eastern Caribbean island country with a history shaped by plantation slavery, British colonialism, and independence."],
+["Belarus","Minsk","Europe","Eastern Europe","A landlocked Eastern European country with extensive forests and a history shaped by neighboring powers."],
+["Belgium","Brussels","Europe","Western Europe","A Western European country with Dutch-, French-, and German-speaking communities and major European Union institutions."],
+["Belize","Belmopan","North America","Central America","A Central American country with Caribbean coastline, Maya heritage, rainforests, and a diverse linguistic landscape."],
+["Benin","Porto-Novo","Africa","West Africa","A West African country with coastal and inland communities and a history associated with the Kingdom of Dahomey."],
+["Bhutan","Thimphu","Asia","Himalayas","A Himalayan kingdom known for mountain environments, Buddhist traditions, and a distinctive approach to development policy."],
+["Bolivia","Sucre","South America","Andes","A landlocked country with high Andes, Amazonian lowlands, and a large Indigenous population."],
+["Bosnia and Herzegovina","Sarajevo","Europe","Southeastern Europe","A Balkan country with diverse religious and cultural communities and a complex modern history."],
+["Botswana","Gaborone","Africa","Southern Africa","A landlocked country known for the Kalahari region, wildlife conservation, and diamond mining."],
+["Brazil","Brasília","South America","Eastern South America","The largest country in South America, home to much of the Amazon Basin and diverse regional cultures."],
+["Brunei","Bandar Seri Begawan","Asia","Southeast Asia","A small, wealthy state on Borneo with an economy strongly associated with oil and natural gas."],
+["Bulgaria","Sofia","Europe","Southeastern Europe","A Balkan country with Black Sea coastlines, mountains, and a long history of cultural exchange."],
+["Burkina Faso","Ouagadougou","Africa","West Africa","A landlocked West African country with Sahelian environments and a rich variety of cultural traditions."],
+["Burundi","Gitega","Africa","East Africa","A small, densely populated country in the African Great Lakes region."],
+["Cabo Verde","Praia","Africa","Atlantic Ocean","An island country off West Africa with a maritime history and a distinctive Creole culture."],
+["Cambodia","Phnom Penh","Asia","Southeast Asia","A Southeast Asian country associated with the Khmer Empire and the Angkor temple complex."],
+["Cameroon","Yaoundé","Africa","Central Africa","A country with coastal, forest, savanna, and mountain environments and extensive linguistic diversity."],
+["Canada","Ottawa","North America","Northern North America","A vast country with Arctic territories, forests, prairie regions, mountain ranges, and extensive freshwater systems."],
+["Central African Republic","Bangui","Africa","Central Africa","A landlocked country with savanna, forest, and river environments in the heart of Africa."],
+["Chad","N'Djamena","Africa","Central Africa","A large landlocked country extending from the Sahara to the Sahel and more southerly savanna regions."],
+["Chile","Santiago","South America","Western South America","A long Pacific-facing country with the Andes, the Atacama Desert, temperate regions, and southern fjords."],
+["China","Beijing","Asia","East Asia","A major East Asian state with a long written history, large population, varied landscapes, and significant global influence."],
+["Colombia","Bogotá","South America","Northwestern South America","A country with Caribbean and Pacific coastlines, Andean highlands, Amazonian territory, and diverse cultures."],
+["Comoros","Moroni","Africa","Indian Ocean","An island country in the Indian Ocean between Madagascar and the East African coast."],
+["Costa Rica","San José","North America","Central America","A Central American country known for biodiversity, volcanic landscapes, and extensive protected areas."],
+["Côte d'Ivoire","Yamoussoukro","Africa","West Africa","A West African country with coastal forests, agricultural production, and major cocoa exports."],
+["Croatia","Zagreb","Europe","Southeastern Europe","A European country with an Adriatic coastline, historic cities, islands, and inland plains."],
+["Cuba","Havana","North America","Caribbean","The largest island country in the Caribbean, with a complex history of Spanish rule, slavery, revolution, and socialist government."],
+["Cyprus","Nicosia","Asia","Eastern Mediterranean","An eastern Mediterranean island with Greek and Turkish cultural connections and a long history of outside influence."],
+["Czechia","Prague","Europe","Central Europe","A Central European country with historic cities, industrial traditions, and a cultural heritage associated with Bohemia and Moravia."],
+["Democratic Republic of the Congo","Kinshasa","Africa","Central Africa","A vast country containing much of the Congo Basin rainforest and extensive mineral resources."],
+["Denmark","Copenhagen","Europe","Northern Europe","A Nordic country with a mainland peninsula, islands, maritime traditions, and a constitutional monarchy."],
+["Djibouti","Djibouti","Africa","Horn of Africa","A strategically located country near the Red Sea and Gulf of Aden, with arid landscapes and major maritime routes."],
+["Dominica","Roseau","North America","Caribbean","A mountainous Caribbean island known for rainforests, rivers, volcanic landscapes, and biodiversity."],
+["Dominican Republic","Santo Domingo","North America","Caribbean","A Caribbean country sharing Hispaniola with Haiti, with a history shaped by Indigenous societies and Spanish colonization."],
+["Ecuador","Quito","South America","Western South America","An equatorial country with Andes, Amazon rainforest, Pacific coastline, and the Galápagos Islands."],
+["Egypt","Cairo","Africa","North Africa","A country centered on the Nile Valley and Delta, with an ancient civilization and a strategic position between Africa and Asia."],
+["El Salvador","San Salvador","North America","Central America","A densely populated Central American country with Pacific coastlines, volcanic landscapes, and a history of civil conflict."],
+["Equatorial Guinea","Malabo","Africa","Central Africa","A Central African country with mainland territory and islands in the Gulf of Guinea."],
+["Eritrea","Asmara","Africa","Horn of Africa","A Red Sea country with highlands, arid lowlands, and a modern history involving Italian rule and a long independence struggle."],
+["Estonia","Tallinn","Europe","Northern Europe","A Baltic country known for forests, islands, digital public services, and a language related to Finnish."],
+["Eswatini","Mbabane","Africa","Southern Africa","A small landlocked southern African kingdom with distinct cultural traditions and varied highland landscapes."],
+["Ethiopia","Addis Ababa","Africa","Horn of Africa","A highland country with ancient states, diverse languages, and a distinctive historical and religious heritage."],
+["Fiji","Suva","Oceania","Melanesia","A Pacific island country with many islands, Indigenous iTaukei traditions, and Indo-Fijian cultural influences."],
+["Finland","Helsinki","Europe","Northern Europe","A Nordic country with extensive forests, lakes, and a language distinct from Scandinavian Germanic languages."],
+["France","Paris","Europe","Western Europe","A European country with a major global cultural influence and overseas territories in several world regions."],
+["Gabon","Libreville","Africa","Central Africa","A Central African country with extensive tropical rainforest and Atlantic coastline."],
+["Gambia","Banjul","Africa","West Africa","A small West African country largely surrounding the Gambia River."],
+["Georgia","Tbilisi","Asia","South Caucasus","A Caucasus country with Black Sea coast, mountain landscapes, and a distinctive language and alphabet."],
+["Germany","Berlin","Europe","Central Europe","A major European country with a federal political system, industrial economy, and a history shaped by division and reunification."],
+["Ghana","Accra","Africa","West Africa","A West African country with a history involving powerful states, Atlantic trade, colonial rule, and independence movements."],
+["Greece","Athens","Europe","Southern Europe","A southeastern European country associated with ancient Greek societies, thousands of islands, and a long Mediterranean history."],
+["Grenada","Saint George's","North America","Caribbean","A Caribbean island country known for spice production, volcanic landscapes, and maritime culture."],
+["Guatemala","Guatemala City","North America","Central America","A Central American country with a large Maya heritage, volcanic highlands, and tropical lowlands."],
+["Guinea","Conakry","Africa","West Africa","A West African country with highlands, river sources, coastal areas, and mineral resources."],
+["Guinea-Bissau","Bissau","Africa","West Africa","A small West African country with a mainland coast and many offshore islands."],
+["Guyana","Georgetown","South America","Northern South America","A South American country with extensive rainforest, Atlantic coastline, and strong Caribbean cultural connections."],
+["Haiti","Port-au-Prince","North America","Caribbean","A Caribbean country whose revolution created the first independent Black republic in 1804."],
+["Honduras","Tegucigalpa","North America","Central America","A Central American country with Caribbean and Pacific access, mountains, forests, and Maya archaeological heritage."],
+["Hungary","Budapest","Europe","Central Europe","A landlocked Central European country with a distinctive Uralic language and a long history in the Danube basin."],
+["Iceland","Reykjavík","Europe","North Atlantic","A North Atlantic island country shaped by volcanoes, glaciers, geothermal energy, and Nordic traditions."],
+["India","New Delhi","Asia","South Asia","A vast South Asian country with many languages, religions, ecosystems, and a history of ancient civilizations and modern independence."],
+["Indonesia","Jakarta","Asia","Southeast Asia","A large Southeast Asian archipelago with extraordinary cultural and biological diversity and many active volcanoes."],
+["Iran","Tehran","Asia","Western Asia","A country with a long Persian historical tradition, varied landscapes, and a central position in West Asian affairs."],
+["Iraq","Baghdad","Asia","Western Asia","A country containing much of ancient Mesopotamia, between the Tigris and Euphrates river systems."],
+["Ireland","Dublin","Europe","Western Europe","An island country with a rich literary and musical heritage and a history of British rule and independence."],
+["Israel","Jerusalem","Asia","Western Asia","A country on the eastern Mediterranean, central to the histories and present-day politics of Jews, Muslims, Christians, and others."],
+["Italy","Rome","Europe","Southern Europe","A Mediterranean country with Roman heritage, Renaissance art, varied landscapes, and major regional cultural differences."],
+["Jamaica","Kingston","North America","Caribbean","A Caribbean island country known for reggae music, distinctive cultural traditions, and a history shaped by slavery and colonialism."],
+["Japan","Tokyo","Asia","East Asia","An East Asian island country with advanced industries, long cultural traditions, mountainous terrain, and frequent earthquakes."],
+["Jordan","Amman","Asia","Western Asia","A West Asian country with desert landscapes and important archaeological sites, including Petra."],
+["Kazakhstan","Astana","Asia","Central Asia","A vast country extending across Central Asia and a small part of Europe, with steppe landscapes and significant mineral resources."],
+["Kenya","Nairobi","Africa","East Africa","An East African country with savannas, highlands, a diverse population, and important wildlife habitats."],
+["Kiribati","South Tarawa","Oceania","Central Pacific","A Pacific island country spread across a vast ocean area, highly exposed to sea-level rise and coastal hazards."],
+["Kuwait","Kuwait City","Asia","Persian Gulf","A Gulf country with an economy strongly associated with petroleum and a history of maritime trade."],
+["Kyrgyzstan","Bishkek","Asia","Central Asia","A mountainous Central Asian country with nomadic cultural traditions and extensive highland landscapes."],
+["Laos","Vientiane","Asia","Southeast Asia","A landlocked Southeast Asian country shaped by the Mekong River and a history of kingdoms and colonial rule."],
+["Latvia","Riga","Europe","Northern Europe","A Baltic country with forests, coastal plains, and a history shaped by regional empires and independence movements."],
+["Lebanon","Beirut","Asia","Western Asia","An eastern Mediterranean country with mountain ranges, a diverse society, and a long history of regional trade."],
+["Lesotho","Maseru","Africa","Southern Africa","A mountainous country entirely surrounded by South Africa."],
+["Liberia","Monrovia","Africa","West Africa","A West African country founded in the nineteenth century through a settlement project involving formerly enslaved people from the United States."],
+["Libya","Tripoli","Africa","North Africa","A North African country with Mediterranean coastline and extensive Sahara Desert territory."],
+["Liechtenstein","Vaduz","Europe","Central Europe","A small Alpine principality between Switzerland and Austria."],
+["Lithuania","Vilnius","Europe","Northern Europe","A Baltic country with a distinctive language and a history that includes a major medieval grand duchy."],
+["Luxembourg","Luxembourg","Europe","Western Europe","A small landlocked European state and a founding participant in European integration."],
+["Madagascar","Antananarivo","Africa","Indian Ocean","A large island off southeastern Africa with many species found nowhere else in the wild."],
+["Malawi","Lilongwe","Africa","Southeastern Africa","A landlocked country known for Lake Malawi and varied highland and lakeshore environments."],
+["Malaysia","Kuala Lumpur","Asia","Southeast Asia","A Southeast Asian country with territories on the Malay Peninsula and Borneo, and a multicultural population."],
+["Maldives","Malé","Asia","Indian Ocean","A low-lying island country in the Indian Ocean particularly vulnerable to sea-level rise."],
+["Mali","Bamako","Africa","West Africa","A landlocked West African country with historical connections to the Mali Empire and trans-Saharan trade."],
+["Malta","Valletta","Europe","Mediterranean","A small Mediterranean island country with prehistoric sites and a history shaped by several maritime powers."],
+["Marshall Islands","Majuro","Oceania","Central Pacific","A Pacific island country composed of atolls and islands with a history involving nuclear testing and strategic administration."],
+["Mauritania","Nouakchott","Africa","Northwest Africa","A large country between the Maghreb and West Africa, with much of its territory in the Sahara."],
+["Mauritius","Port Louis","Africa","Indian Ocean","An island country with a multicultural population and a history shaped by maritime trade, colonialism, and plantation economies."],
+["Mexico","Mexico City","North America","North America","A large country with Indigenous civilizations, Spanish colonial history, mountain ranges, deserts, forests, and extensive coastlines."],
+["Micronesia","Palikir","Oceania","Western Pacific","The Federated States of Micronesia comprises four states spread across many islands in the western Pacific."],
+["Moldova","Chișinău","Europe","Eastern Europe","A landlocked Eastern European country with agricultural landscapes and a history shaped by neighboring empires."],
+["Monaco","Monaco","Europe","Western Europe","A small sovereign city-state on the Mediterranean coast near France."],
+["Mongolia","Ulaanbaatar","Asia","East Asia","A landlocked country with extensive steppe and desert landscapes and a historical legacy associated with the Mongol Empire."],
+["Montenegro","Podgorica","Europe","Southeastern Europe","A Balkan country with Adriatic coastline, mountainous terrain, and a complex regional history."],
+["Morocco","Rabat","Africa","Northwest Africa","A North African country connecting Atlantic and Mediterranean coastlines with the Atlas Mountains and Sahara."],
+["Mozambique","Maputo","Africa","Southeastern Africa","An Indian Ocean country with long coastlines, varied ecosystems, and a history of Portuguese colonial rule and independence."],
+["Myanmar","Naypyidaw","Asia","Southeast Asia","A Southeast Asian country with diverse ethnic communities, river valleys, mountains, and a complex modern political history."],
+["Namibia","Windhoek","Africa","Southern Africa","A sparsely populated country known for desert landscapes, the Namib coast, and extensive wildlife areas."],
+["Nauru","Yaren","Oceania","Central Pacific","A small Pacific island state with a history of phosphate mining and environmental change. Yaren is the government district commonly used as the capital designation."],
+["Nepal","Kathmandu","Asia","Himalayas","A Himalayan country containing Mount Everest and diverse communities shaped by mountain geography."],
+["Netherlands","Amsterdam","Europe","Western Europe","A low-lying European country known for water management, trade, cycling infrastructure, and constitutional monarchy."],
+["New Zealand","Wellington","Oceania","South Pacific","A Pacific country with Māori heritage, volcanic landscapes, mountains, and distinctive island ecosystems."],
+["Nicaragua","Managua","North America","Central America","A Central American country with lakes, volcanoes, Pacific and Caribbean coasts, and varied cultural traditions."],
+["Niger","Niamey","Africa","West Africa","A landlocked Sahelian country with extensive desert territory and communities whose livelihoods are adapted to dry environments."],
+["Nigeria","Abuja","Africa","West Africa","Africa's most populous country, with hundreds of ethnic and linguistic communities and a large, diverse economy."],
+["North Korea","Pyongyang","Asia","East Asia","A state on the Korean Peninsula with a highly centralized political system and limited international access."],
+["North Macedonia","Skopje","Europe","Southeastern Europe","A landlocked Balkan country with mountainous terrain and a complex regional cultural history."],
+["Norway","Oslo","Europe","Northern Europe","A Nordic country known for fjords, mountains, maritime industries, and extensive Arctic territory."],
+["Oman","Muscat","Asia","Arabian Peninsula","A country on the southeastern Arabian Peninsula with a long maritime history and desert and mountain landscapes."],
+["Pakistan","Islamabad","Asia","South Asia","A South Asian country containing the Indus River basin, high mountains, deserts, and a diverse population."],
+["Palau","Ngerulmud","Oceania","Western Pacific","A Pacific island country known for marine biodiversity and a history of changing external administration."],
+["Panama","Panama City","North America","Central America","A Central American country whose canal connects Atlantic and Pacific maritime routes."],
+["Papua New Guinea","Port Moresby","Oceania","Melanesia","A Pacific country with mountainous terrain, tropical forests, and extraordinary linguistic and cultural diversity."],
+["Paraguay","Asunción","South America","South America","A landlocked South American country with Guaraní cultural and linguistic influences and large river systems."],
+["Peru","Lima","South America","Western South America","A South American country with Andean landscapes, Amazonian rainforest, and the heritage of the Inca civilization."],
+["Philippines","Manila","Asia","Southeast Asia","An archipelago in Southeast Asia with diverse languages and cultures, a complex colonial history, and exposure to tropical cyclones and earthquakes."],
+["Poland","Warsaw","Europe","Central Europe","A Central European country with a long history of statehood, partition, occupation, resistance, and postwar reconstruction."],
+["Portugal","Lisbon","Europe","Southern Europe","A southwestern European country with an Atlantic maritime history and a global legacy of exploration and colonialism."],
+["Qatar","Doha","Asia","Persian Gulf","A small Gulf state with an economy shaped by natural gas, international aviation, and global investment."],
+["Republic of the Congo","Brazzaville","Africa","Central Africa","A Central African country with Atlantic coastline and large areas of Congo Basin rainforest."],
+["Romania","Bucharest","Europe","Eastern Europe","A southeastern European country with Carpathian Mountains, the Danube Delta, and a diverse historical heritage."],
+["Russia","Moscow","Europe","Eurasia","The world's largest country by land area, extending across Europe and Asia with enormous climatic and geographic diversity."],
+["Rwanda","Kigali","Africa","East Africa","A landlocked Great Lakes country whose modern history includes the 1994 genocide against the Tutsi and subsequent reconstruction."],
+["Saint Kitts and Nevis","Basseterre","North America","Caribbean","A small Caribbean federation composed of two main islands."],
+["Saint Lucia","Castries","North America","Caribbean","A Caribbean island country known for volcanic mountains, coastal environments, and Creole cultural traditions."],
+["Saint Vincent and the Grenadines","Kingstown","North America","Caribbean","A Caribbean country made up of a main volcanic island and smaller Grenadine islands."],
+["Samoa","Apia","Oceania","Polynesia","A Polynesian island country with strong customary institutions and a history of colonial administration and independence."],
+["San Marino","San Marino","Europe","Southern Europe","A small independent state surrounded by Italy, traditionally tracing its origins to late antiquity."],
+["Sao Tome and Principe","São Tomé","Africa","Gulf of Guinea","An island country off Central Africa with tropical ecosystems and a history shaped by plantation agriculture."],
+["Saudi Arabia","Riyadh","Asia","Arabian Peninsula","A large Arabian Peninsula state containing Islam's two holiest cities and major petroleum resources."],
+["Senegal","Dakar","Africa","West Africa","A West African country with Atlantic coastline, historic trading centers, and diverse cultural traditions."],
+["Serbia","Belgrade","Europe","Southeastern Europe","A landlocked Balkan country with a history shaped by medieval states, Ottoman rule, Yugoslavia, and modern European politics."],
+["Seychelles","Victoria","Africa","Indian Ocean","An island country in the western Indian Ocean with distinctive ecosystems and a tourism-oriented economy."],
+["Sierra Leone","Freetown","Africa","West Africa","A West African country with Atlantic coastline and a history involving colonialism, the transatlantic slave trade, and civil war."],
+["Singapore","Singapore","Asia","Southeast Asia","A highly urbanized island city-state and major international center for shipping, finance, and trade."],
+["Slovakia","Bratislava","Europe","Central Europe","A landlocked Central European country with Carpathian landscapes and a history of shared statehood with the Czech lands."],
+["Slovenia","Ljubljana","Europe","Central Europe","A Central European country with Alpine mountains, karst landscapes, and a small Adriatic coastline."],
+["Solomon Islands","Honiara","Oceania","Melanesia","A Pacific island country with diverse communities and important World War II historical sites."],
+["Somalia","Mogadishu","Africa","Horn of Africa","A Horn of Africa country with a long Indian Ocean trading history and extensive coastline."],
+["South Africa","Pretoria","Africa","Southern Africa","A country with extraordinary linguistic and cultural diversity and a modern history deeply shaped by apartheid and its dismantling."],
+["South Korea","Seoul","Asia","East Asia","A state on the southern Korean Peninsula with advanced industries, democratic institutions, and a distinctive cultural history."],
+["South Sudan","Juba","Africa","East Africa","A landlocked country that became independent in 2011 and has faced serious conflict and humanitarian challenges."],
+["Spain","Madrid","Europe","Southern Europe","A European country with diverse regional languages, Mediterranean and Atlantic coasts, and a long imperial history."],
+["Sri Lanka","Sri Jayawardenepura Kotte","Asia","South Asia","An island country south of India with ancient kingdoms, Buddhist heritage, and diverse communities."],
+["Sudan","Khartoum","Africa","Northeast Africa","A large country linking the Sahara, Sahel, and Nile regions, with ancient Nubian heritage and modern conflict."],
+["Suriname","Paramaribo","South America","Northern South America","A small South American country with extensive rainforest and a multicultural society shaped by migration and colonialism."],
+["Sweden","Stockholm","Europe","Northern Europe","A Nordic country with forests, lakes, a Baltic coastline, and a constitutional monarchy."],
+["Switzerland","Bern","Europe","Central Europe","A landlocked Alpine country with a federal system and multiple national languages."],
+["Syria","Damascus","Asia","Western Asia","A West Asian country with ancient urban history and a modern history devastated by prolonged conflict."],
+["Tajikistan","Dushanbe","Asia","Central Asia","A mountainous Central Asian country with Persian-speaking cultural traditions."],
+["Tanzania","Dodoma","Africa","East Africa","An East African country with Mount Kilimanjaro, the Serengeti, the Zanzibar archipelago, and diverse communities."],
+["Thailand","Bangkok","Asia","Southeast Asia","A Southeast Asian country with a long monarchy, Buddhist traditions, tropical ecosystems, and major tourism and manufacturing sectors."],
+["Timor-Leste","Dili","Asia","Southeast Asia","A young Southeast Asian state that gained internationally recognized independence in 2002 after a long struggle."],
+["Togo","Lomé","Africa","West Africa","A narrow West African country extending from the Gulf of Guinea toward the Sahel."],
+["Tonga","Nuku'alofa","Oceania","Polynesia","A Polynesian kingdom composed of islands and coral formations in the South Pacific."],
+["Trinidad and Tobago","Port of Spain","North America","Caribbean","A Caribbean country with petroleum and gas industries, Carnival traditions, and a diverse population."],
+["Tunisia","Tunis","Africa","North Africa","A North African country with Mediterranean coastline and historical connections to Carthage and Roman North Africa."],
+["Türkiye","Ankara","Asia","Transcontinental","A transcontinental country linking southeastern Europe and western Asia, with a history including the Byzantine and Ottoman empires."],
+["Turkmenistan","Ashgabat","Asia","Central Asia","A Central Asian country with extensive desert territory and major natural-gas resources."],
+["Tuvalu","Funafuti","Oceania","Polynesia","A low-lying Pacific island country facing serious climate and sea-level challenges."],
+["Uganda","Kampala","Africa","East Africa","An East African country with lakes, fertile highlands, and a history involving several kingdoms and colonial rule."],
+["Ukraine","Kyiv","Europe","Eastern Europe","A large European country with fertile plains, Black Sea coastline, and a distinct national history."],
+["United Arab Emirates","Abu Dhabi","Asia","Arabian Peninsula","A federation of seven emirates on the Arabian Peninsula with a major role in global aviation, energy, and commerce."],
+["United Kingdom","London","Europe","Northwestern Europe","A sovereign state composed of England, Scotland, Wales, and Northern Ireland, with a major historical role in industrialization and empire."],
+["United States","Washington, D.C.","North America","North America","A large federal republic with extensive geographic diversity and major global economic, political, scientific, and cultural influence."],
+["Uruguay","Montevideo","South America","Southern South America","A South American country with Atlantic coastlands, grasslands, and a history of democratic institutions and social reforms."],
+["Uzbekistan","Tashkent","Asia","Central Asia","A landlocked Central Asian country containing historic Silk Road cities such as Samarkand and Bukhara."],
+["Vanuatu","Port Vila","Oceania","Melanesia","A Pacific island country with volcanic islands, diverse languages, and strong customary cultural traditions."],
+["Vatican City","Vatican City","Europe","Southern Europe","A sovereign city-state within Rome and the headquarters of the Holy See, central to the Roman Catholic Church."],
+["Venezuela","Caracas","South America","Northern South America","A South American country with Caribbean coastline, the Andes, the Orinoco Basin, and major petroleum resources."],
+["Vietnam","Hanoi","Asia","Southeast Asia","A Southeast Asian country with long coastlines, river deltas, and a history of resistance to foreign rule and modern reunification."],
+["Yemen","Sana'a","Asia","Arabian Peninsula","A country at the southern end of the Arabian Peninsula with ancient trading traditions and a severe modern humanitarian crisis."],
+["Zambia","Lusaka","Africa","Southern Africa","A landlocked country known for the Zambezi River, Victoria Falls region, and copper mining."],
+["Zimbabwe","Harare","Africa","Southern Africa","A landlocked country with Great Zimbabwe heritage, varied ecosystems, and an economy shaped by agriculture and mineral resources."],
+["Holy See","Vatican City","Europe","Southern Europe","The Holy See is the central governing authority of the Roman Catholic Church and a sovereign subject of international law."],
+["State of Palestine","East Jerusalem","Asia","Western Asia","A state recognized by many countries, with a status and territorial situation shaped by the Israeli-Palestinian conflict and international diplomacy."]
+];
+
+const grid = document.getElementById("countryGrid");
+const search = document.getElementById("countrySearch");
+const filter = document.getElementById("continentFilter");
+const count = document.getElementById("resultsCount");
+const dialog = document.getElementById("countryDialog");
+const dialogContent = document.getElementById("dialogContent");
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function(char) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[char];
+    });
+}
+
+function getFlag(name) {
+    const flags = {
+        "Afghanistan":"🇦🇫","Albania":"🇦🇱","Algeria":"🇩🇿",
+        "Andorra":"🇦🇩","Angola":"🇦🇴","Antigua and Barbuda":"🇦🇬",
+        "Argentina":"🇦🇷","Armenia":"🇦🇲","Australia":"🇦🇺",
+        "Austria":"🇦🇹","Azerbaijan":"🇦🇿","Bahamas":"🇧🇸",
+        "Bahrain":"🇧🇭","Bangladesh":"🇧🇩","Barbados":"🇧🇧",
+        "Belarus":"🇧🇾","Belgium":"🇧🇪","Belize":"🇧🇿",
+        "Benin":"🇧🇯","Bhutan":"🇧🇹","Bolivia":"🇧🇴",
+        "Bosnia and Herzegovina":"🇧🇦","Botswana":"🇧🇼","Brazil":"🇧🇷",
+        "Brunei":"🇧🇳","Bulgaria":"🇧🇬","Burkina Faso":"🇧🇫",
+        "Burundi":"🇧🇮","Cabo Verde":"🇨🇻","Cambodia":"🇰🇭",
+        "Cameroon":"🇨🇲","Canada":"🇨🇦","Central African Republic":"🇨🇫",
+        "Chad":"🇹🇩","Chile":"🇨🇱","China":"🇨🇳",
+        "Colombia":"🇨🇴","Comoros":"🇰🇲","Costa Rica":"🇨🇷",
+        "Côte d'Ivoire":"🇨🇮","Croatia":"🇭🇷","Cuba":"🇨🇺",
+        "Cyprus":"🇨🇾","Czechia":"🇨🇿","Democratic Republic of the Congo":"🇨🇩",
+        "Denmark":"🇩🇰","Djibouti":"🇩🇯","Dominica":"🇩🇲",
+        "Dominican Republic":"🇩🇴","Ecuador":"🇪🇨","Egypt":"🇪🇬",
+        "El Salvador":"🇸🇻","Equatorial Guinea":"🇬🇶","Eritrea":"🇪🇷",
+        "Estonia":"🇪🇪","Eswatini":"🇸🇿","Ethiopia":"🇪🇹",
+        "Fiji":"🇫🇯","Finland":"🇫🇮","France":"🇫🇷",
+        "Gabon":"🇬🇦","Gambia":"🇬🇲","Georgia":"🇬🇪",
+        "Germany":"🇩🇪","Ghana":"🇬🇭","Greece":"🇬🇷",
+        "Grenada":"🇬🇩","Guatemala":"🇬🇹","Guinea":"🇬🇳",
+        "Guinea-Bissau":"🇬🇼","Guyana":"🇬🇾","Haiti":"🇭🇹",
+        "Honduras":"🇭🇳","Hungary":"🇭🇺","Iceland":"🇮🇸",
+        "India":"🇮🇳","Indonesia":"🇮🇩","Iran":"🇮🇷",
+        "Iraq":"🇮🇶","Ireland":"🇮🇪","Israel":"🇮🇱",
+        "Italy":"🇮🇹","Jamaica":"🇯🇲","Japan":"🇯🇵",
+        "Jordan":"🇯🇴","Kazakhstan":"🇰🇿","Kenya":"🇰🇪",
+        "Kiribati":"🇰🇮","Kuwait":"🇰🇼","Kyrgyzstan":"🇰🇬",
+        "Laos":"🇱🇦","Latvia":"🇱🇻","Lebanon":"🇱🇧",
+        "Lesotho":"🇱🇸","Liberia":"🇱🇷","Libya":"🇱🇾",
+        "Liechtenstein":"🇱🇮","Lithuania":"🇱🇹","Luxembourg":"🇱🇺",
+        "Madagascar":"🇲🇬","Malawi":"🇲🇼","Malaysia":"🇲🇾",
+        "Maldives":"🇲🇻","Mali":"🇲🇱","Malta":"🇲🇹",
+        "Marshall Islands":"🇲🇭","Mauritania":"🇲🇷","Mauritius":"🇲🇺",
+        "Mexico":"🇲🇽","Micronesia":"🇫🇲","Moldova":"🇲🇩",
+        "Monaco":"🇲🇨","Mongolia":"🇲🇳","Montenegro":"🇲🇪",
+        "Morocco":"🇲🇦","Mozambique":"🇲🇿","Myanmar":"🇲🇲",
+        "Namibia":"🇳🇦","Nauru":"🇳🇷","Nepal":"🇳🇵",
+        "Netherlands":"🇳🇱","New Zealand":"🇳🇿","Nicaragua":"🇳🇮",
+        "Niger":"🇳🇪","Nigeria":"🇳🇬","North Korea":"🇰🇵",
+        "North Macedonia":"🇲🇰","Norway":"🇳🇴","Oman":"🇴🇲",
+        "Pakistan":"🇵🇰","Palau":"🇵🇼","Panama":"🇵🇦",
+        "Papua New Guinea":"🇵🇬","Paraguay":"🇵🇾","Peru":"🇵🇪",
+        "Philippines":"🇵🇭","Poland":"🇵🇱","Portugal":"🇵🇹",
+        "Qatar":"🇶🇦","Republic of the Congo":"🇨🇬","Romania":"🇷🇴",
+        "Russia":"🇷🇺","Rwanda":"🇷🇼","Saint Kitts and Nevis":"🇰🇳",
+        "Saint Lucia":"🇱🇨","Saint Vincent and the Grenadines":"🇻🇨",
+        "Samoa":"🇼🇸","San Marino":"🇸🇲","Sao Tome and Principe":"🇸🇹",
+        "Saudi Arabia":"🇸🇦","Senegal":"🇸🇳","Serbia":"🇷🇸",
+        "Seychelles":"🇸🇨","Sierra Leone":"🇸🇱","Singapore":"🇸🇬",
+        "Slovakia":"🇸🇰","Slovenia":"🇸🇮","Solomon Islands":"🇸🇧",
+        "Somalia":"🇸🇴","South Africa":"🇿🇦","South Korea":"🇰🇷",
+        "South Sudan":"🇸🇸","Spain":"🇪🇸","Sri Lanka":"🇱🇰",
+        "Sudan":"🇸🇩","Suriname":"🇸🇷","Sweden":"🇸🇪",
+        "Switzerland":"🇨🇭","Syria":"🇸🇾","Tajikistan":"🇹🇯",
+        "Tanzania":"🇹🇿","Thailand":"🇹🇭","Timor-Leste":"🇹🇱",
+        "Togo":"🇹🇬","Tonga":"🇹🇴","Trinidad and Tobago":"🇹🇹",
+        "Tunisia":"🇹🇳","Türkiye":"🇹🇷","Turkmenistan":"🇹🇲",
+        "Tuvalu":"🇹🇻","Uganda":"🇺🇬","Ukraine":"🇺🇦",
+        "United Arab Emirates":"🇦🇪","United Kingdom":"🇬🇧",
+        "United States":"🇺🇸","Uruguay":"🇺🇾","Uzbekistan":"🇺🇿",
+        "Vanuatu":"🇻🇺","Vatican City":"🇻🇦","Venezuela":"🇻🇪",
+        "Vietnam":"🇻🇳","Yemen":"🇾🇪","Zambia":"🇿🇲",
+        "Zimbabwe":"🇿🇼","Holy See":"🇻🇦","State of Palestine":"🇵🇸"
+    };
+    return flags[name] || "🌐";
+}
+
+function renderCountries() {
+    const query = search.value.toLowerCase().trim();
+    const selectedContinent = filter.value;
+
+    const filtered = countries.filter(function(country) {
+        const searchable = country.join(" ").toLowerCase();
+        const matchesText = searchable.includes(query);
+        const matchesContinent = !selectedContinent ||
+            country[2] === selectedContinent ||
+            (selectedContinent === "Oceania" && country[2] === "Oceania");
+        return matchesText && matchesContinent;
+    });
+
+    count.textContent = "Showing " + filtered.length +
+        " of " + countries.length + " directory entries.";
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="no-results">No matching country found. Check your spelling or select another continent.</div>';
+        return;
+    }
+
+    grid.innerHTML = filtered.map(function(country) {
+        const name = escapeHTML(country[0]);
+        const capital = escapeHTML(country[1]);
+        const continent = escapeHTML(country[2]);
+        const region = escapeHTML(country[3]);
+        const summary = escapeHTML(country[4]);
+
+        return `
+            <article class="card country-card">
+                <div class="country-flag">${getFlag(country[0])}</div>
+                <h3>${name}</h3>
+                <div class="country-meta">${continent} · ${region}</div>
+                <p><strong>Capital / capital designation:</strong> ${capital}</p>
+                <p>${summary}</p>
+                <button type="button" data-country="${name}">
+                    Explore country
+                </button>
+            </article>
+        `;
+    }).join("");
+}
+
+function openCountry(name) {
+    const country = countries.find(function(item) {
+        return item[0] === name;
+    });
+
+    if (!country) return;
+
+    dialogContent.innerHTML = `
+        <div style="font-size:48px">${getFlag(country[0])}</div>
+        <h2 id="dialogTitle">${escapeHTML(country[0])}</h2>
+        <p><strong>Capital or commonly listed capital:</strong>
+            ${escapeHTML(country[1])}</p>
+        <p><strong>Continent classification:</strong>
+            ${escapeHTML(country[2])}</p>
+        <p><strong>Subregion:</strong>
+            ${escapeHTML(country[3])}</p>
+        <h3>Country overview</h3>
+        <p>${escapeHTML(country[4])}</p>
+        <h3>Topics for further research</h3>
+        <ul>
+            <li>Physical geography, climate, rivers, mountains, and ecosystems.</li>
+            <li>Precolonial and ancient history, where applicable, and the development of the modern state.</li>
+            <li>Constitution, government, political institutions, and legal system.</li>
+            <li>Population, languages, cultural communities, and religious traditions.</li>
+            <li>Economy, education, healthcare, transport, and infrastructure.</li>
+            <li>Historical landmarks, protected areas, and cultural heritage.</li>
+            <li>Current affairs, foreign relations, and international agreements.</li>
+        </ul>
+        <div class="info">
+            This is a short introductory profile, not a complete national
+            encyclopedia. Verify current leaders, statistics, laws, borders,
+            and political developments using up-to-date official sources.
+        </div>
+    `;
+
+    dialog.showModal();
+}
+
+grid.addEventListener("click", function(event) {
+    const button = event.target.closest("button[data-country]");
+    if (button) openCountry(button.dataset.country);
+});
+
+document.getElementById("closeDialog").addEventListener("click", function() {
+    dialog.close();
+});
+
+dialog.addEventListener("click", function(event) {
+    if (event.target === dialog) dialog.close();
+});
+
+search.addEventListener("input", renderCountries);
+filter.addEventListener("change", renderCountries);
+
+renderCountries();
+</script>
+
+</body>
+</html>
